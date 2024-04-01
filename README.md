@@ -24,3 +24,11 @@ NoteS::
 CREATE USER 'root'@'172.19.0.2' IDENTIFIED BY 'test';
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.1.5' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+###################################################################################################
+Access MantisBT:  http://localhost:8989 or http://<your_server_ip>:8989
+
+Log in: Use the default administrator credentials to log in for the first time:
+
+Username: administrator
+Password: root
+###################################################################################################
