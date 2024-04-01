@@ -1,0 +1,32 @@
+version: "3"
+
+networks:        ######We are using Host VM networking to bing with container by bridge driver
+  mantis-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16  # Define a subnet for the network
+
+services:      #####To run MantisBT service in container by image so we have commented build otherwise it will create new image then run container####
+  mantisbt:
+    #build: .
+	image: <image_name>:<tag>
+    container_name: mantisbt
+    ports:       #####Expose External port mapping fromVM to container    VMport:ContainerPort   ########
+      - "8989:80"
+    environment:       ####
+      - MANTIS_ENABLE_ADMIN=1
+      - EMAIL_WEBMASTER=webmaster@localhost
+      - EMAIL_FROM=webmaster@localhost
+      - EMAIL_RETURN_PATH=webmaster@localhost
+      - MYSQL_HOST=host.docker.internal  # Reference the host VM's MySQL instance
+      - MYSQL_DATABASE=mantisdb
+      - MYSQL_USER=mantis
+      - MYSQL_PASSWORD=p@ssword
+    restart: always
+    volumes:          ######## We are defining here log paths
+      - ./mantis_logs:/var/www/html/*.logs
+      - ./apache2_logs:/var/log/apache2
+    networks:        ####### assign Network IP Address
+      mantis-network:
+        ipv4_address: 172.19.0.3  # Assign a static IP address to the container
